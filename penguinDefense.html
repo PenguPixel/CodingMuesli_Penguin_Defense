@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="de">
+	<head>
+		<meta charset="utf-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		
+		<link rel="stylesheet" href="./style/penguinDefense.css"/>
+		
+		<script src="./js/utility.js"></script>
+		<script src="./js/languages.js"></script>
+		
+		<!-- Projectile script and sub-classes -->
+		<script src="./js/projectiles/Projectile.js"></script>
+		<script src="./js/projectiles/Snowball.js"></script>
+		<script src="./js/projectiles/Pinecone.js"></script>
+		<script src="./js/projectiles/LargeSnowball.js"></script>
+		<script src="./js/projectiles/Icespike.js"></script>
+		<script src="./js/projectiles/Laser.js"></script>
+		<script src="./js/projectiles/Trouterang.js"></script>
+		
+		<!-- Tower script and sub-classes -->
+		<script src="./js/towers/Tower.js"></script>
+		<script src="./js/towers/Penguin.js"></script>
+		<script src="./js/towers/PineconeGunner.js"></script>
+		<script src="./js/towers/Catapult.js"></script>
+		<script src="./js/towers/SnowballGun.js"></script>
+		<script src="./js/towers/IceMage.js"></script>
+		<script src="./js/towers/Superpenguin.js"></script>
+		<script src="./js/towers/Fisher.js"></script>
+		
+		<!-- Enemy script and sub-classes -->
+		<script src="./js/enemies/Enemy.js"></script>
+		<script src="./js/enemies/Snowman.js"></script>
+		<script src="./js/enemies/Yeti.js"></script>
+		<script src="./js/enemies/SnowAngel.js"></script>
+		<script src="./js/enemies/IceGolem.js"></script>
+		
+		<!-- Level classes -->
+		<script src="./js/level/Path.js"></script>
+		<script src="./js/level/Tile.js"></script>
+		<script src="./js/level/Level.js"></script>
+		<script src="./js/level/Wave.js"></script>
+		
+		<!-- UI classes -->
+		<script src="./js/ui/Cards.js"></script>
+		<script src="./js/ui/TowerCards.js"></script>
+		<script src="./js/ui/UpgradeCards.js"></script>
+		<script src="./js/ui/Shop.js"></script>
+		<script src="./js/ui/Menu.js"></script>
+		<script src="./js/ui/Ui.js"></script>
+		
+		<!-- Audio -->
+		<script src="./js/Audiohandler.js"></script>
+		
+		<!-- Mainscript -->
+		<script src="./js/penguinDefense.js"></script>
+	</head>
+	<body>
+		<main id="GAMEBOARD">
+			<canvas id="MAP"></canvas>
+			<canvas id="TOWERS"></canvas>
+			<canvas id="ENEMIES"></canvas>
+			<canvas id="SHOP"></canvas>
+			<canvas id="UI"></canvas>
+		</main>
+		<!-- Images to load before starting JavaScript -->
+		<aside id="IMAGES">
+			<!-- Projectile Sprites -->
+			<img src="./img/projectiles/snowball.png" id="SNOWBALL_SPRITE"/>
+			<img src="./img/projectiles/pinecone.png" id="PINECONE_SPRITE"/>
+			<img src="./img/projectiles/largeSnowball.png" id="LARGE_SNOWBALL_SPRITE"/>
+			<img src="./img/projectiles/icespike.png" id="ICESPIKE_SPRITE"/>
+			<img src="./img/projectiles/Laser.png" id="LASER_SPRITE"/>
+			<img src="./img/projectiles/trouterang.png" id="TROUTERANG_SPRITE"/>
+			
+			<!-- Tower Sprites -->
+			<img src="./img/towers/penguin.png" id="PENGUIN_SPRITE"/>
+			<img src="./img/towers/pineconeGunner.png" id="PINECONE_GUNNER_SPRITE"/>
+			<img src="./img/towers/snowballGun.png" id="SNOWBALL_GUN_SPRITE"/>
+			<img src="./img/towers/catapult.png" id="CATAPULT_SPRITE"/>
+			<img src="./img/towers/iceMage.png" id="ICE_MAGE_SPRITE"/>
+			<img src="./img/towers/superpenguin.png" id="SUPERPENGUIN_SPRITE"/>
+			<img src="./img/towers/fisher.png" id="FISHER_SPRITE"/>
+			
+			<!-- Enemy Sprites -->
+			<img src="./img/enemies/snowman_spritesheet.png" alt="28" id="SNOWMAN_SPRITESHEET"/>
+			<img src="./img/enemies/yeti_spritesheet.png" alt="56" id="YETI_SPRITESHEET"/>
+			<img src="./img/enemies/snowAngel_spritesheet.png" alt="60" id="SNOW_ANGEL_SPRITESHEET"/>
+			<img src="./img/enemies/iceGolem_spritesheet.png" alt="52" id="ICE_GOLEM_SPRITESHEET"/>
+			
+			<!-- Tileset -->
+			<img src="./img/level/levelTilesDeco.png" id="TILESET"/>
+			
+			<!-- UI Images -->
+			<img src="./img/ui/PenguinCard.png" id="PENGUIN_CARD"/>
+			<img src="./img/ui/PineconeCard.png" id="PINECONEGUNNER_CARD"/>
+			<img src="./img/ui/CatapultCard.png" id="CATAPULT_CARD"/>
+			<img src="./img/ui/SnowballgunCard.png" id="SNOWBALLGUN_CARD"/>
+			<img src="./img/ui/IceMageCard.png" id="ICEMAGE_CARD"/>
+			<img src="./img/ui/SuperpenguinCard.png" id="SUPERPENGUIN_CARD"/>
+			<img src="./img/ui/FisherCard.png" id="FISHER_CARD"/>
+			<img src="./img/ui/RangeUpgradeCard.png" id="RANGE_UPGRADE_CARD"/>
+			<img src="./img/ui/SpeedUpgradeCard.png" id="SPEED_UPGRADE_CARD"/>
+			<img src="./img/ui/TrouterangUpgradeCard.png" id="TROUTERANG_UPGRADE_CARD"/>
+			<img src="./img/ui/PierceUpgradeCard.png" id="PIERCE_UPGRADE_CARD"/>
+			<img src="./img/ui/LoadingFadeIn.png" alt="160" id="LOAD_FADE_IN"/>
+			<img src="./img/ui/LoadingFadeOut.png" alt="1" id="LOAD_FADE_OUT"/>
+			<img src="./img/ui/LoadingFadeOutAlt.png" alt="160" id="LOAD_FADE_OUT_OLD"/>
+			<img src="./img/ui/pauseButton.png" id="PAUSE_BUTTON"/>
+			<img src="./img/ui/playButton.png" alt="24" id="PLAY_BUTTON"/>
+			<img src="./img/ui/continueButton_EN.png" id="CONTINUE_BUTTON_EN"/>
+			<img src="./img/ui/continueButton_GER.png" id="CONTINUE_BUTTON_GER"/>
+			<img src="./img/ui/mainMenuButton_EN.png" id="MAIN_MENU_BUTTON_EN"/>
+			<img src="./img/ui/mainMenuButton_GER.png" id="MAIN_MENU_BUTTON_GER"/>
+			<img src="./img/ui/health.png" id="HEALTH"/>
+			<img src="./img/ui/snow.png" id="SNOW"/>
+			<img src="./img/ui/wave.png" id="WAVE"/>
+			<img src="./img/ui/lose.png" id="LOSE"/>
+			<img src="./img/ui/win.png" id="WIN"/>
+			<img src="./img/ui/UpgradeArrow.png" id="ARROW"/>
+			<img src="./img/ui/rerollButton_EN.png" id="REROLL_BUTTON_EN"/>
+			<img src="./img/ui/rerollButton_GER.png" id="REROLL_BUTTON_GER"/>
+			<img src="./img/ui/flagEN.png" id="FLAG_EN"/>
+			<img src="./img/ui/flag_EN_active.png" id="FLAG_EN_ACTIVE"/>
+			<img src="./img/ui/flagGER.png" id="FLAG_GER"/>
+			<img src="./img/ui/flag_GER_active.png" id="FLAG_GER_ACTIVE"/>
+			
+			<!-- Main Menu Images -->
+			<img src="./img/menu/menu.png" id="MENU_BACKGROUND"/>
+			<img src="./img/menu/levelsButton.png" id="LEVELS_BUTTON"/>
+			<img src="./img/menu/playLevelButton.png" id="PLAY_LEVEL_BUTTON"/>
+			<img src="./img/menu/options.png" id="OPTIONS_BUTTON"/>
+			<img src="./img/menu/scrollRight.png" id="SCROLL_RIGHT_BUTTON"/>
+			<img src="./img/menu/scrollLeft.png" id="SCROLL_LEFT_BUTTON"/>
+			<img src="./img/menu/levelselectBorder.png" id="SELECT_BORDER"/>
+			<img src="./img/menu/menuButton.png" id="MENU_BUTTON"/>
+			<img src="./img/menu/medals.png" alt="16" id="MEDALS"/>
+			
+			<!-- Audio -->
+			<!-- https://pixabay.com/music/christmas-north-pole-magical-mysterious-christmas-music-loop-250748/ -->
+			<audio src="./audio/cyberwave-orchestra-north-pole-magical-mysterious-christmas-music-loop-250748.mp3" loop id="MENU_TRACK"></audio>
+			<!-- Celeste, Strawberry Jam Mod, "Unwinding" by usuyus,
+				https://www.youtube.com/watch?v=DzEZQQR02UI
+				https://gamebanana.com/mods/424541 -->
+			<audio src="./audio/Unwinding - Celeste Strawberry Jam.mp3" loop id="LEVEL_TRACK"></audio>
+			<audio src="./audio/hit1.mp3" id="HIT1"></audio>	<!-- https://pixabay.com/sound-effects/nature-snowball-smash-1-36743/ -->
+			<audio src="./audio/hit2.mp3" id="HIT2"></audio>	<!-- https://pixabay.com/sound-effects/film-special-effects-wet-plastic-hit-96146/ -->
+			<audio src="./audio/woosh1.mp3" id="THROW_1"></audio>	<!-- https://pixabay.com/sound-effects/film-special-effects-woosh-345977/ -->
+			<audio src="./audio/woosh2.mp3" id="THROW_2"></audio>	<!-- https://pixabay.com/sound-effects/film-special-effects-woosh-230554/ -->
+			<audio src="./audio/shopCoin.wav" id="BUY"></audio>
+			<audio src="./audio/placementSoundSnow.wav" id="PLACEMENT_AUDIO_SNOW"></audio>
+			<audio src="./audio/uiUpgradePop.wav" id="UPGRADE_AUDIO"></audio>
+			<audio src="./audio/placementSoundWater.wav" id="PLACEMENET_AUDIO_WATER"></audio>	<!-- https://pixabay.com/sound-effects/film-special-effects-water-splash-199583/ -->
+		</aside>
+	</body>
+</html>
