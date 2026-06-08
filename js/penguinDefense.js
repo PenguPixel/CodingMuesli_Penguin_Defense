@@ -283,16 +283,17 @@ function switchLanguage() {
 
 function control(evt) {
 	switch(evt.keyCode) {
-		//case 171: level.waveCounter++; level.money+=50; break;	// +	DEBUG: skip wave
+		//case 171: level.waveCounter++; level.money+=500; break;	// +	DEBUG: skip wave
 		//case 76: level.health = 0; break;	// L DEBUG for losescreen
 		case 27: state["paused"] = !state["paused"]; break;	// Esc
 		/*case 32: state["inShop"] = true;
 				 shop.isActive = true;
 				 break;	// Space DEBUG for winscreen*/
+		//case 32: showShop(); break;	// DEBUG: Reroll Shop
 		case 83:	// S
 			if(state["inShop"]) { level.startWave(); }
 			else { state["speedup"] = state["speedup"]%3 + 1; break; }
-		case 88:	// X
+		/*case 88:	// X	Hides or displays the shop when pressed
 			if(state["inShop"] && shop.isActive) {
 				shop.clear();
 				shop.isActive = false;
@@ -300,7 +301,7 @@ function control(evt) {
 				shop.display();
 				shop.isActive = true;
 			}
-			break;
+			break;*/
 		default: console.log("Key " + evt.keyCode + " is not mapped to any action.");
 	}
 }

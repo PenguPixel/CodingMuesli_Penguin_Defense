@@ -1,16 +1,16 @@
 // Author Philipp Locher
 class UpgradeCard extends Card {
 	static DEFAULT_STAT_NAME = "Stat name not found.";
-	constructor (id, name, towerClass, statName, effectFn, amount, mode, cost, img, rate=1, description = '') {
+	constructor (id, name, towerClass, statName, effectFn, amount, mode, cost, img, rate=1, description) {
 		super (
 		id,
 		'upgrade',
 		name,
 		{
-			description,
+			get description() { return description(); },
 			towerType: towerClass,
-			towerName: towerClass.NAME,
-			statName,
+			get towerName() { return towerClass.NAME; },
+			get statName() { return statName(); },
 			function: effectFn,
 			amount,
 			mode,
@@ -36,16 +36,16 @@ class RangeCard extends UpgradeCard {
 	constructor(id, name, towerClass, amount, mode, cost, rate) {
 		super(
 		id,
-		Card.DICT[name],
+		() => { return Card.DICT[name]; },
 		towerClass,
-		RangeCard.STAT_NAME,
+		() => { return RangeCard.STAT_NAME; },
 		Tower.increaseRange,
 		amount,
 		mode,
 		cost,
 		document.getElementById(RangeCard.IMG_ID),
 		rate,
-		Card.RANGE_DESC
+		() => { return Card.RANGE_DESC; }
 		);
 	}
 }
@@ -64,16 +64,16 @@ class SpeedCard extends UpgradeCard {
 	constructor(id, name, towerClass, amount, mode, cost, rate) {
 		super(
 		id,
-		Card.DICT[name],
+		() => { return Card.DICT[name]; },
 		towerClass,
-		SpeedCard.STAT_NAME,
+		() => { return SpeedCard.STAT_NAME; },
 		Tower.increaseAttackSpeed,
 		amount,
 		mode,
 		cost,
 		document.getElementById(SpeedCard.IMG_ID),
 		rate,
-		Card.SPEED_DESC
+		() => { return Card.SPEED_DESC; }
 		);
 	}
 }
@@ -214,16 +214,16 @@ class PineconePierceCard extends UpgradeCard {
 	constructor() {
 		super(
 			'pinecone_pierce',			// id
-			'Durchschuss',				// name
+			() => { return Card.DICT["Pierce"]; },		// name
 			PineconeGunner,				// tower class
-			'Durchschuss',				// stat name
+			() => { return Card.DICT["PierceStatName"]; },		// stat name
 			PineconeGunner.increasePierce,
 			2,							// amount
 			'total',					// mode
 			50,							// cost
 			document.getElementById('PIERCE_UPGRADE_CARD'),
 			3,							// rate
-			Card.PIERCE_DESC			// bubble description
+			() => { return Card.PIERCE_DESC; }			// bubble description
 		);
 	}
 }
@@ -544,16 +544,16 @@ class FisherTrouterangCard extends UpgradeCard {
 	constructor() {
 		super(
 			'fisher_trouterang',		// id
-			'Forellerang',		 		// name
+			() => { return Card.DICT["Trouterang"]; }, 		// name
 			Fisher,						// tower class
-			'Forellerang Anzahl',		// stat name
+			() => { return Card.DICT["TrouterangStatName"]; },		// stat name
 			Fisher.increaseTrouterangCount,
 			1,							// amount
 			'total',					// mode
 			200,							// cost
 			document.getElementById('TROUTERANG_UPGRADE_CARD'),
 			2,							// rate
-			Card.TROUTERANG_DESC		// bubble description
+			() => { return Card.TROUTERANG_DESC; }		// bubble description
 		)
 	}
 }

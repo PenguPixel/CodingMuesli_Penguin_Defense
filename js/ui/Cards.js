@@ -29,7 +29,7 @@ class Card{
 			"PierceDesc":		"Increases the amount of pierce for this tower.",
 			"RangeStatName":		"Range",
 			"SpeedStatName":		"Attack Speed",
-			"TrouterangStatName":	"Trouterang Amount",
+			"TrouterangStatName":	"Trouterangs",
 			"PierceStatName":		"Pierce",
 			"RangeSmall":		"Little Range",
 			"RangeEpic":		"Big Range",
@@ -47,7 +47,8 @@ class Card{
 	
 	id;			// unique name
 	type;		// tower / upgrade / etc.
-	name;		// shown name
+	_internalName;	// function to find name based on language in runtime
+	get name() { return this._internalName(); }		// shown name
 	data;		// stats and effects
 	img;		// img from html
 	rate;
@@ -55,7 +56,7 @@ class Card{
 	constructor(id, type, name, data, img, rate){
 		this.id = id;
 		this.type = type;
-		this.name = name;
+		this._internalName = name;
 		this.data = data;
 		this.img = img;
 		this.rate = rate;

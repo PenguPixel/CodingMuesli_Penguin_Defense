@@ -17,7 +17,7 @@ class Languages {
 			"Range":	["Reichweite: ", this.Attributes.Range],
 			"AtkSpeed":	["Geschwindigkeit: ", this.Attributes.AtkSpeed],
 			"Upgrade":	["Upgrade"],
-			"Increase":	["Erhöhe die ", this.Attributes.StatName],
+			"Increase":	["Erhöhe ", this.Attributes.StatName],
 			"By":		["um ", this.Attributes.Amount]
 		},
 		"English":	{
@@ -25,7 +25,7 @@ class Languages {
 			"Range":	["Range: ", this.Attributes.Range],
 			"AtkSpeed":	["Attack Speed: ", this.Attributes.AtkSpeed],
 			"Upgrade":	["Upgrade"],
-			"Increase":	["Increase the ", this.Attributes.StatName],
+			"Increase":	["Increases ", this.Attributes.StatName],
 			"By":		["by ", this.Attributes.Amount]
 		}
 	};
