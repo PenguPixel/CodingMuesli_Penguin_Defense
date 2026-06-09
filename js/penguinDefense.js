@@ -208,7 +208,6 @@ function update(newTimestamp) {
 		updateLevel(newTimestamp);
 	}
 	updateUi(newTimestamp);
-	Audiohandler.update();
 	// finish up function call and request next frame
 	lastTimestamp = newTimestamp;
 	animationID = requestAnimationFrame(update);
@@ -377,13 +376,13 @@ function setupAudio() {
 	menuAudio.volume = 0.25;
 	levelAudio.volume = 0.15;
 	Tower.throwAudio1 = document.getElementById("THROW_1");
-	Tower.throwAudio1.volume = 1;
+	Tower.throwAudio1.volume = 0.5;
 	Tower.throwAudio2 = document.getElementById("THROW_2");
-	Tower.throwAudio2.volume = 0.08;
+	Tower.throwAudio2.volume = 0.5;
 	Projectile.hitAudio1 = document.getElementById("HIT1");
-	Projectile.hitAudio1.volume = 0.1;
+	Projectile.hitAudio1.volume = 0.45;
 	Projectile.hitAudio2 = document.getElementById("HIT2");
-	Projectile.hitAudio2.volume = 0.1;
+	Projectile.hitAudio2.volume = 0.45;
 	Ui.buyAudio = document.getElementById('BUY');
 	Ui.buyAudio.volume = 1;
 	Ui.upgradeAudio = document.getElementById("UPGRADE_AUDIO");
@@ -471,6 +470,7 @@ function waitForClick(evt) {
 
 function start() {
 	setupCanvas();
+	Audiohandler.init();
 	Util.mousePos();
 	let ctx = uiCv.getContext("2d");
 	ctx.fillStyle = "#ffffff";

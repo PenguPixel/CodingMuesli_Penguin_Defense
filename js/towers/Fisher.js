@@ -10,7 +10,7 @@ class Fisher extends Tower {
 	static COST = 250;
 	static _DESCS = {
 		"German":	"Wirft mit Forellerängen nach Gegnern die immer zu ihm zurückkehren. Kann nur im Wasser platziert werden.",
-		"English":	"Throws with Trouterangs at enemies, that always return to it. Can only be placed in water."
+		"English":	"Throws with Trouterangs at enemies that always return to it. Can only be placed in water."
 	};
 	static get DESC() {
 		let desc = Fisher._DESCS[Languages.language];

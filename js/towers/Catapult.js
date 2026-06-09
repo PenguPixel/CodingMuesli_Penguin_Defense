@@ -12,7 +12,7 @@ class Catapult extends Tower {
 		"English":	"Slings a big, slow snowball with area damage. Hits multiple enemies at once and is especially strong against big clusters of enemies."
 	};
 	static get DESC() {
-		let desc = Fisher._DESCS[Languages.language];
+		let desc = Catapult._DESCS[Languages.language];
 		if(desc == undefined) { return Tower.DEFAULT_DESC; }
 		return desc;
 	}

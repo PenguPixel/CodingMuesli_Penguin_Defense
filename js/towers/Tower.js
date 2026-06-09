@@ -2,20 +2,21 @@
 class Tower {
 	_posX; _posY;
 	damage = 0; // TODO
-	range = 0;			// in pixels
-	attackSpeed = 1;	// cooldown in seconds
-	facingX = 0; facingY = 1;	// direction the tower is facing, to be interpreted as normalised vector
+	range = 0;            // in pixels
+	attackSpeed = 1;    // cooldown in seconds
+	facingX = 0; facingY = 1;    // direction the tower is facing, to be interpreted as normalised vector
 	img;
-	Projectile;	// class of the projectile
+	Projectile;    // class of the projectile
 	lastShot = 0; // duration since last shot in seconds
 	selected = false;
 	validPlacement = false;
 	isPlaced = false;
 	hitboxRadius = 0;
 	validTiles = ["G"];
-	throwAudio1;
-	throwAudio2;
-	
+	throwAudio1Src;   // Geändert: Speichert nur noch den Pfad-String
+	throwAudio2Src;   // Geändert: Speichert nur noch den Pfad-String
+	throwAudioVolume; // Geändert: Speichert die Lautstärke
+
 	// Setting default values and shared variables for all instances
 	static DEFAULT_IMG_ID = "PENGUIN_SPRITE";
 	static DEFAULT_PROJECTILE = Projectile;
@@ -28,7 +29,7 @@ class Tower {
 	static level;
 	static throwAudio1;
 	static throwAudio2;
-	
+
 	constructor(posX = 0, posY = 0, range = 0, attackSpeed = 1, img = Tower.DEFAULT_IMG_ID, Projectile = Tower.DEFAULT_PROJECTILE, hitboxRadius = Tower.DEFAULT_HITBOX_RADIUS, validTiles = ["G"]) {
 		this.range = range;
 		this.attackSpeed = attackSpeed;
@@ -37,14 +38,13 @@ class Tower {
 		this.Projectile = Projectile;
 		this.hitboxRadius = hitboxRadius;
 		this.validTiles = validTiles;
-		this.throwAudio1 = document.createElement("audio");
-		this.throwAudio1.src = Tower.throwAudio1.src;
-		this.throwAudio1.volume = Tower.throwAudio1.volume;
-		this.throwAudio2 = document.createElement("audio");
-		this.throwAudio2.src = Tower.throwAudio2.src;
-		this.throwAudio2.volume = Tower.throwAudio2.volume;
+
+		// BUGFIX: Nur die Werte der statischen Vorlage kopieren, kein neues Element erstellen
+		this.throwAudio1Src = Tower.throwAudio1.src;
+		this.throwAudio2Src = Tower.throwAudio2.src;
+		this.throwAudioVolume = Tower.throwAudio1.volume;
 	}
-	
+
 	display() {
 		let ctx = Tower.cv.getContext("2d");
 		let angle = Util.getAngle(this.facingX, this.facingY);
@@ -53,14 +53,14 @@ class Tower {
 		ctx.rotate(angle - Math.PI/2);
 		ctx.drawImage(this.img, -this.img.width, -this.img.height, this.img.width*2, this.img.height*2);
 		// reset transformations to standard
-		ctx.setTransform(1, 0, 0, 1, 0, 0);	
+		ctx.setTransform(1, 0, 0, 1, 0, 0);
 		if(this.selected) { this.showStats(); }
 	}
-	
+
 	static getBubbleSummaryLines(tower) {
 		let lines = [];
 		let statNames = ["Range", "Speed"];
-		let stats =	[tower.range, Math.round(tower.attackSpeed*100)/100];
+		let stats =    [tower.range, Math.round(tower.attackSpeed*100)/100];
 		for(let i = 0; i < statNames.length; i++) {
 			let tmp = Languages.statSummary(statNames[i]);
 			tmp += stats[i];
@@ -68,7 +68,7 @@ class Tower {
 		}
 		return lines;
 	}
-	
+
 	showStats() {
 		let ctx = Tower.cv.getContext("2d");
 		ctx.beginPath();
@@ -94,14 +94,14 @@ class Tower {
 		Ui.drawBubble(ctx, this._posX, this._posY, bubbleWidth, bubbleHeight);
 		Ui.drawBubbleLines(ctx, lines, this._posX, this._posY, bubbleHeight);
 	}
-	
+
 	// Turn towards the targeted enemy and normalise the vector
 	faceEnemy(enemy) {
 		let normalised = Util.normalise(enemy.posX - this.posX, enemy.posY - this.posY);
 		this.facingX = normalised[0];
 		this.facingY = normalised[1];
 	}
-	
+
 	// iterate through the array of enemies to check if one is within the radius
 	checkForEnemy() {
 		for(let enemy of Tower.enemies) {
@@ -113,17 +113,13 @@ class Tower {
 		}
 		return null;
 	}
-	
+
 	playThrowSound() {
-		if(!(this.throwAudio1.paused && this.throwAudio2.paused)) { return; }
-		let tmp = Math.random();
-		if(tmp < 0.5) {
-			Audiohandler.requestAudio(this.throwAudio1);
-		} else {
-			Audiohandler.requestAudio(this.throwAudio2);
-		}
+		// BUGFIX: Übergibt den gemerkten Pfad direkt an den neuen Audiohandler
+		let src = (Math.random() < 0.5) ? this.throwAudio1Src : this.throwAudio2Src;
+		Audiohandler.play(src, this.throwAudioVolume);
 	}
-	
+
 	// create a new projectile going into the direction the tower is facing if the attack cooldown has ended
 	shoot(duration) {
 		if(this.lastShot > this.attackSpeed) {
@@ -132,10 +128,10 @@ class Tower {
 			this.playThrowSound();
 		}
 	}
-	
+
 	checkPlacement() {
-		// Kopiert von Philipp	-----------------------------------------------------------------------------------------
-		let canPos = Tower.cv.getBoundingClientRect();		//ermittelt die genaue Position des Canvas im Browserfenster
+		// Kopiert von Philipp    -----------------------------------------------------------------------------------------
+		let canPos = Tower.cv.getBoundingClientRect();        //ermittelt die genaue Position des Canvas im Browserfenster
 		this.posX = (Util.mouseX - canPos.left) / (canPos.width / Tower.cv.width);
 		this.posY = (Util.mouseY - canPos.top) / (canPos.height / Tower.cv.height);
 		// --------------------------------------------------------------------------------------------------------------
@@ -158,7 +154,7 @@ class Tower {
 		}
 		this.validPlacement = validTile && Tower.level.path.isPointPlacable(this.posX, this.posY);
 	}
-	
+
 	update(duration) {
 		if(this.isPlaced) {
 			this.lastShot += duration;
@@ -172,16 +168,16 @@ class Tower {
 		}
 		this.display();
 	}
-	
+
 	// Getter and Setter
-	
+
 	get posX() { return this._posX + this.img.width; }
 	get posY() { return this._posY + this.img.height; }
 	set posX(x) { this._posX = Math.round(x - this.img.width); }
 	set posY(y) { this._posY = Math.round(y - this.img.height); }
-	
+
 	// Static functions for upgrade functionality
-	
+
 	static increaseRange(tower, amount, mode) {
 		if(mode == "%") {
 			tower.range *= 1 + (amount/100);
@@ -189,7 +185,7 @@ class Tower {
 			tower.range += amount;
 		}
 	}
-	
+
 	static increaseAttackSpeed(tower, amount, mode) {
 		if(mode == "%") {
 			tower.attackSpeed /= 1 + (amount/100);
@@ -197,7 +193,7 @@ class Tower {
 			tower.attackSpeed -= amount;
 		}
 	}
-	
+
 	static increaseDamage(tower, amount, mode) {
 		if(mode == "%") {
 			tower.damage *= 1 + (amount/100);
@@ -205,13 +201,13 @@ class Tower {
 			tower.damage += amount;
 		}
 	}
-	
+
 	// Philipp Auswahl passender Placement Sound
 	static choosePlacementSound(tower) {
 		if(tower instanceof Fisher) {
-			Audiohandler.requestAudio(Ui.placementAudioWater);
+			Audiohandler.play(Ui.placementAudioWater, Ui.placementAudioWater.volume);
 		} else {
-			Audiohandler.requestAudio(Ui.placementAudioSnow);
+			Audiohandler.play(Ui.placementAudioSnow, Ui.placementAudioSnow.volume);
 		}
 	}
 }
